@@ -4,6 +4,7 @@ close all
 clc
 
 fprintf("Welcome to hangman\n");
+fprintf("You have 6 attempts to guess the correct word.\n")
 fprintf("\n");
 
 DrawNoose();
@@ -35,9 +36,13 @@ Length = length(TheWordToBeGuessed); %Finds the length of the string
 
 AmountOfLetters = isletter(TheWordToBeGuessed);
 
-for i=1:Length
- String1= fprintf('_ ');
-end
+fprintf("_____________________________________________________________________________________________\n\n")
+String1 = repmat('_ ', 1, Length);
+fprintf('%s\n\n', String1)
+fprintf("_____________________________________________________________________________________________\n")
+% for i=1:Length
+%  String1= fprintf('_ ');
+% end
 
 
 
@@ -47,7 +52,7 @@ while 1
      
 %Takes input from player    
 if AmountWrong < 6
-LetterInput = input('\nGuess a letter: ','s');
+LetterInput = input('\nGuess a letter (or the full word): ','s');
 TheInputString = string(LetterInput);           %converts LetterInput to string form
 LowercaseInput = lower(TheInputString);         %converts to lowercase
 StringFindInput= strfind(MainString, LowercaseInput);        %Looks for guess within actual word
@@ -60,24 +65,31 @@ InputLengthCorrect = length(StringFindInput);
     if InputLengthCorrect >= 1
     clc
     fprintf('Correct letter guessed\n')
+%     for i = 1:Length-1
+%         if (LowercaseInput == MainString(i))
+%              String1(i) = LowercaseInput;
+%              fprintf('%s', String1)
+%         end
+%     end
+            dashindex = strfind(String1, '_');
+            String1(dashindex(StringFindInput))= LowercaseInput;
+            fprintf('%s\n', String1)
     fprintf('%d attempts remaining.\n', GuessesLeft)
     fprintf('"%s"\n',word)
-    if LowercaseInput == TheWordToBeGuessed
-        fprintf('You Won!\n')
-        break
-    end
+  
     else
     clc
     fprintf('Wrong letter\n')
     GuessesLeft = GuessesLeft - 1;
     fprintf('%d attempts remaining.\n', GuessesLeft)
     fprintf('"%s"\n',word)
+    fprintf('%s\n', String1)
     AmountWrong = AmountWrong + 1;
     DrawHangingMan(AmountWrong)
     end
     
     else
-        fprintf("You've lost\n");
+        fprintf("You've lost.\n");
         break
     end
 
